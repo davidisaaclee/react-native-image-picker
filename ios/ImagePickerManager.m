@@ -178,10 +178,15 @@ RCT_EXPORT_METHOD(launchImageLibrary:(NSDictionary *)options callback:(RCTRespon
     }
     
     NSMutableDictionary *asset = [[NSMutableDictionary alloc] init];
-    asset[@"duration"] = @(CMTimeGetSeconds([AVAsset assetWithURL:videoDestinationURL].duration));
+    AVAsset *avAsset = [AVAsset assetWithURL:videoDestinationURL];
+    asset[@"duration"] = @(CMTimeGetSeconds(avAsset.duration));
     asset[@"uri"] = videoDestinationURL.absoluteString;
     asset[@"type"] = [ImagePickerUtils getFileTypeFromUrl:videoDestinationURL];
-    
+    AVAssetTrack *videoTrack = [avAsset tracksWithMediaType:AVMediaTypeVideo][0];
+    CGSize videoSize = CGSizeApplyAffineTransform(videoTrack.naturalSize, videoTrack.preferredTransform);
+    asset[@"width"] = videoSize.width;
+    asset[@"height"] = videoSize.height;
+
     return asset;
 }
 
