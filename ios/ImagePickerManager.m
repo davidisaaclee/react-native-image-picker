@@ -184,8 +184,8 @@ RCT_EXPORT_METHOD(launchImageLibrary:(NSDictionary *)options callback:(RCTRespon
     asset[@"type"] = [ImagePickerUtils getFileTypeFromUrl:videoDestinationURL];
     AVAssetTrack *videoTrack = [avAsset tracksWithMediaType:AVMediaTypeVideo][0];
     CGSize videoSize = CGSizeApplyAffineTransform(videoTrack.naturalSize, videoTrack.preferredTransform);
-    asset[@"width"] = videoSize.width;
-    asset[@"height"] = videoSize.height;
+    asset[@"width"] = [NSNumber numberWithFloat:fabs(videoSize.width)];
+    asset[@"height"] = [NSNumber numberWithFloat:fabs(videoSize.height)];
 
     return asset;
 }
